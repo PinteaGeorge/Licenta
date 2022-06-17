@@ -1,0 +1,86 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { FileUploader } from 'ng2-file-upload';
+import { take } from 'rxjs';
+import { Member } from 'src/app/_models/member';
+import { Photo } from 'src/app/_models/Photo';
+import { User } from 'src/app/_models/user';
+import { AccountService } from 'src/app/_services/account.service';
+import { MembersService } from 'src/app/_services/members.service';
+import { environment } from 'src/environments/environment';
+
+@Component({
+  selector: 'app-photo-editor',
+  templateUrl: './photo-editor.component.html',
+  styleUrls: ['./photo-editor.component.css']
+})
+export class PhotoEditorComponent implements OnInit {
+  @Input() memberTemplate: Member;
+  uploader: FileUploader;
+  hasBaseDropZoneOver = false;
+  baseUrl = environment.apiUrl;
+  user: User;
+
+  constructor(private accountService: AccountService,private memberService: MembersService) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe(user => this.user = user);
+   }
+
+  ngOnInit(): void {
+    this.initUploader();
+  }
+
+  fileOverBase(e: any){
+    this.hasBaseDropZoneOver = e;
+  }
+
+  initUploader(){
+    this.uploader = new FileUploader({
+      url: this.baseUrl + 'users/addphoto',
+      authToken: 'Bearer ' + this.user.token,
+      isHTML5: true,
+      allowedFileType: ['image'],
+      removeAfterUpload: true,
+      autoUpload: false,
+      maxFileSize: 10 * 1024 *1024
+    });
+    this.uploader.onAfterAddingFile = (file) => {
+      file.withCredentials = false;
+    }
+
+    this.uploader.onSuccessItem = (item, response, status, header) => {
+      if(response){
+        const photo: Photo = JSON.parse(response);
+        this.memberTemplate.photos.push(photo);
+        if(photo.isMain) {
+          this.user.photoUrl = photo.url;
+          this.memberTemplate.photoUrl = photo.url;
+          this.accountService.setCurrentUser(this.user);
+        }
+      }
+    }
+  }
+
+  setMainPhoto(photo: Photo){
+    this.memberService.setMainPhoto(photo.id).subscribe(() => {
+      this.user.photoUrl = photo.url;
+      this.accountService.setCurrentUser(this.user);
+      this.memberTemplate.photoUrl = photo.url;
+      this.memberTemplate.photos.forEach(item => {
+        if(item.isMain) 
+        {
+          item.isMain = false;
+        }
+        if(item.id === photo.id) 
+        {
+          item.isMain = true;
+        }
+      })
+    })
+  }
+
+  deletePhoto(photoId: number){
+    this.memberService.deletePhoto(photoId).subscribe(() => {
+      this.memberTemplate.photos = this.memberTemplate.photos.filter(x => x.id !== photoId);
+    })
+  }
+
+}

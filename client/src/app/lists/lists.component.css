@@ -1,0 +1,21 @@
+h2{
+    color: white;
+}
+
+.btn-primary{
+    margin-right: 20px;
+}
+
+.my-pagination::ng-deep .page-item .page-link {
+    z-index: 1;
+    color: white;
+    background-color:transparent !important;
+    border: none;
+}
+
+.my-pagination::ng-deep .page-item.active .page-link {
+    z-index: 1;
+    border-color: white;
+    border-style: solid !important;
+    border-radius: 5px;
+}

@@ -1,0 +1,26 @@
+img{
+    max-height: 50px;
+}
+
+.table{
+    color: white;
+}
+
+h3{
+    color: white;
+}
+
+.my-pagination::ng-deep .page-item .page-link {
+    z-index: 1;
+    color: white;
+    background-color:transparent !important;
+    border: none;
+}
+
+.my-pagination::ng-deep .page-item.active .page-link {
+    z-index: 1;
+    border-color: white;
+    border-style: solid !important;
+    border-radius: 5px;
+}
+

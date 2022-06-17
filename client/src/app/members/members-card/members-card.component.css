@@ -1,0 +1,73 @@
+.card:hover img {
+    transform: scale(1.2, 1.2);
+    transition-duration: 500ms;
+    transition-timing-function: ease-out;
+    opacity: 0.7;
+    border-radius: 10px;
+}
+
+.card img {
+    transform: scale(1.0, 1.0);
+    transition-duration: 500ms;
+    transition-timing-function: ease-out;
+    border-radius: 10px;
+}
+
+.card-img-wrapper {
+    overflow: hidden;
+    position: relative;
+    border-radius: 10px;
+}
+
+.member-icons {
+    position: absolute;
+    bottom: -30%;
+    left: 0;
+    right: 0;
+    margin-right: auto;
+    margin-left: auto;
+    opacity: 0;
+}
+
+.card-img-wrapper:hover .member-icons {
+    bottom: 0;
+    opacity: 1;
+}
+
+.card:not(i){
+    background-color: transparent;
+    color: white;
+    border: none;
+}
+
+.animate {
+    transition: all 0.3s ease-in-out;
+}
+
+@keyframes fa-blink {
+    0% {opacity: 1;}
+    100% {opacity: 0.4;}
+}
+
+.is-online {
+    animation: fa-blink 1.5s linear infinite;
+    color: rgb(11, 172, 46);
+}
+
+.btn-secondary{
+    background-color: transparent !important;
+    color: red;
+    border: none;
+}
+
+.btn-primary{
+    background-color: transparent !important;
+    color: black;
+    border: none;
+}
+
+.btn-warning{
+    background-color: transparent !important;
+    color: white;
+    border: none;
+}

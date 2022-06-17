@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-4">
+        <div class="card">
+            <img src="{{memberTemplate.photoUrl || './assets/user.png'}}" alt="{{memberTemplate.knownAs}}"
+                class="card-img-top img-thumbnail">
+            <div class="card-body">
+                <div class="mb-2" *ngIf="(presence.onlineUsers$ | async).includes(memberTemplate.username)">
+                    <i class="fa fa-circle text-success"></i> Online now
+                </div>
+                <div>
+                    <strong>Location: </strong>
+                    <p>{{memberTemplate.city}}, {{memberTemplate.country}}</p>
+                </div>
+                <div>
+                    <strong>Age: </strong>
+                    <p>{{memberTemplate.age}}</p>
+                </div>
+                <div>
+                    <strong>Last Active: </strong>
+                    <p>{{memberTemplate.lastActive | timeago}}</p>
+                </div>
+                <div>
+                    <strong>Member since: </strong>
+                    <p>{{memberTemplate.created | date:'dd MMMM yyyy'}}</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="btn-group d-flex">
+                    <button class="btn btn-danger mr-3" (click)="addLike(memberTemplate)"><i class="fa fa-heart"></i>
+                        Like</button>
+                    <button (click)="selectTab(3)" class="btn btn-success"><i class="fa fa-commenting-o"></i>
+                        Message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
+        <tabset class="member-tabset" #memberTabs>
+            <tab heading='About {{memberTemplate.knownAs}}' (selectTab)="onTabActivated($event)">
+                <h4>Description</h4>
+                <p>{{memberTemplate.introduction}}</p>
+                <h4>Looking for</h4>
+                <p>{{memberTemplate.lookingFor}}</p>
+            </tab>
+            <tab heading='Interests' (selectTab)="onTabActivated($event)">
+                <h4>Interests</h4>
+                <p>{{memberTemplate.interests}}</p>
+            </tab>
+            <tab heading='Photos' (selectTab)="onTabActivated($event)">
+                <ngx-gallery [options]="galleryOptions" [images]="galleryImages"
+                    style="display: inline-block; margin-bottom: 20px;"></ngx-gallery>
+            </tab>
+            <tab heading='Messages' (selectTab)="onTabActivated($event)">
+                <app-member-messages [username]="memberTemplate.username"></app-member-messages>
+            </tab>
+        </tabset>
+    </div>
+</div>
