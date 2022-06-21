@@ -40,11 +40,12 @@ export class MessagesComponent implements OnInit {
   }
 
   deleteMessage(id: number){
-    this.confirmService.confirm('Confirm delete message', 'Are you sure you want to delete this message? This cannot be undone!').subscribe(result =>{
+    this.confirmService.confirm('Confirm delete message', 
+    'Are you sure you want to delete this message? This cannot be undone!').subscribe(result =>{
       if(result){
         this.messageService.deleteMessage(id).subscribe(() => {
           this.messages.splice(this.messages.findIndex(x => x.id === id), 1);
-          this.toastr.success('Message has benn deleted!');
+          this.toastr.success('Message has been deleted!');
         });
       }
     });
